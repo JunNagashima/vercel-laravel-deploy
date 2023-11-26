@@ -4,7 +4,6 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\Todo;
-use Illuminate\Support\Facades\Log;
 
 class TodoController extends Controller
 {
@@ -13,9 +12,7 @@ class TodoController extends Controller
      */
     public function index(Request $request)
     {
-        Log::debug($request);
         $search = session()->get("search");
-        Log::debug($search);
         $sort = session()->get("sort");
         $query = Todo::query();
 
@@ -28,9 +25,10 @@ class TodoController extends Controller
         if ($search && $search["limit_at"]) $query->where("limit_at", $search["limit_at"]);
         if ($sort && $sort["limit_at"]) $query->orderBy("limit_at", $sort["limit_at"]);
 
-        $todos = $query->get();
-        Log::debug($todos);
-        return view("todos", compact("todos"));
+        // $todos = $query->get();
+
+        // return view("todos", compact("todos"));
+        return view("todos");
     }
 
     /**
