@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\Todo;
+use Illuminate\Support\Facades\Log;
 
 class TodoController extends Controller
 {
@@ -12,22 +13,24 @@ class TodoController extends Controller
      */
     public function index(Request $request)
     {
-        // $search = session()->get("search");
-        // $sort = session()->get("sort");
-        // $query = Todo::query();
+        Log::debug($request);
+        $search = session()->get("search");
+        Log::debug($search);
+        $sort = session()->get("sort");
+        $query = Todo::query();
 
-        // // フィルターとソートを同時に行うため
-        // if ($search) session()->keep(['search']);
-        // if ($sort) session()->keep(['sort']);
+        // フィルターとソートを同時に行うため
+        if ($search) session()->keep(['search']);
+        if ($sort) session()->keep(['sort']);
 
-        // if ($search && !is_null($search["status"])) $query->where("status", $search["status"]);
-        // if ($search && $search["title"]) $query->where("title", 'LIKE', '%' . $search["title"] . '%');
-        // if ($search && $search["limit_at"]) $query->where("limit_at", $search["limit_at"]);
-        // if ($sort && $sort["limit_at"]) $query->orderBy("limit_at", $sort["limit_at"]);
+        if ($search && !is_null($search["status"])) $query->where("status", $search["status"]);
+        if ($search && $search["title"]) $query->where("title", 'LIKE', '%' . $search["title"] . '%');
+        if ($search && $search["limit_at"]) $query->where("limit_at", $search["limit_at"]);
+        if ($sort && $sort["limit_at"]) $query->orderBy("limit_at", $sort["limit_at"]);
 
-        // $todos = $query->get();
-        // return view("todos", compact("todos"));
-        return view('welcome');
+        $todos = $query->get();
+        Log::debug($todos);
+        return view("todos", compact("todos"));
     }
 
     /**
